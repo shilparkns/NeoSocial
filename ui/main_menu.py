@@ -1,4 +1,5 @@
 from ui.auth_handler import handle_register, handle_login
+from ui.profile_handler import handle_view_profile, handle_edit_profile
 
 def main_loop():
     """Main entry point: controls auth and logged-in flow."""
@@ -43,19 +44,19 @@ def show_auth_menu():
 def show_logged_in_menu(current_user):
     """Menu shown when a user is logged in."""
     print(f"\n=== Logged in as {current_user.username} ===")
-    print("1) Show my info")
+    print("1) View my profile")
+    print("2) Edit my profile")
     print("0) Logout")
 
     choice = input("> ").strip()
 
     if choice == "1":
-        print("\n--- My Profile ---")
-        print(f"ID:       {current_user.id}")
-        print(f"Name:     {current_user.name}")
-        print(f"Username: {current_user.username}")
-        print(f"Email:    {current_user.email}")
-        print(f"Bio:      {current_user.bio}")
+        handle_view_profile(current_user)
         return current_user, False
+
+    elif choice == "2":
+        updated_user = handle_edit_profile(current_user)
+        return updated_user, False
 
     elif choice == "0":
         print("Logged out.")
