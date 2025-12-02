@@ -1,0 +1,29 @@
+# Python cache and build
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# Environment/config
+.env
+.env.*
+
+# Neo4j (if any local db files)
+*.db
+*.neo4j
+
+# Misc
+*.swp
+*.bak
+*.tmp
