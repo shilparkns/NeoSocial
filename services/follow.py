@@ -21,6 +21,15 @@ def follow_user(current_user_id: str, target_username: str):
     record = res[0]
     if record["meId"] == record["targetId"]:
         return {"error": "You cannot follow yourself."}
+    
+    # Check if already following
+    query = """
+    MATCH (me:User {id: $meId})-[r:FOLLOWS]->(target:User {username: $username})
+    RETURN COUNT(r) AS count
+    """
+    res = run_query(query, {"meId": current_user_id, "username": target_username})
+    if res and res[0]["count"] > 0:
+        return {"error": "You are already following this user."}
 
     # Create FOLLOWS relationship
     query = """
