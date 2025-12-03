@@ -1,3 +1,4 @@
 from ui.main_menu import main_loop
 if __name__ == "__main__":
     main_loop()
+    print("Exiting application.")
