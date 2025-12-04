@@ -1,6 +1,6 @@
 from ui.auth_handler import handle_register, handle_login
 from ui.profile_handler import handle_view_profile, handle_edit_profile
-from ui.follow_handler import handle_follow, handle_unfollow 
+from ui.follow_handler import handle_follow, handle_unfollow, handle_view_connections
 
 def main_loop():
     """Main entry point: controls auth and logged-in flow."""
@@ -48,6 +48,7 @@ def show_logged_in_menu(current_user):
     print("2) Edit my profile")
     print("3) Follow a user")
     print("4) Unfollow a user")
+    print("5) View my connections") 
     print("0) Logout")
 
     choice = input("> ").strip()
@@ -66,6 +67,10 @@ def show_logged_in_menu(current_user):
 
     elif choice == "4":
         handle_unfollow(current_user)
+        return current_user, False
+    
+    elif choice == "5":
+        handle_view_connections(current_user)
         return current_user, False
 
     elif choice == "0":

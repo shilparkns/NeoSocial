@@ -1,4 +1,4 @@
-from services.follow import follow_user, unfollow_user
+from services.follow import follow_user, unfollow_user, get_connections
 
 def handle_follow(current_user):
     print("\n=== Follow User ===")
@@ -30,3 +30,32 @@ def handle_unfollow(current_user):
         print("Could not unfollow user:", result["error"])
     else:
         print(f"You have unfollowed '{username}'.")
+
+
+def handle_view_connections(current_user):
+    # this function show my connection
+
+    print("\n=== View My Connections ===")
+
+    data = get_connections(current_user.id)
+
+    # show following list
+    print("People I follow:")
+    if len(data["following"]) == 0:
+        print("I follow nobody ... sad")
+    else:
+        for person in data["following"]:
+            print(f" - {person['username']}")
+
+    # show followers list
+    print("\nPeople who follow me:")
+    if len(data["followers"]) == 0:
+        print("No one follows me ... T_T")
+    else:
+        for person in data["followers"]:
+            print(f" - {person['username']}")
+
+
+
+
+
