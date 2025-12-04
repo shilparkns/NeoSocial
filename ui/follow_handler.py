@@ -42,7 +42,7 @@ def handle_view_connections(current_user):
     # show following list
     print("People I follow:")
     if len(data["following"]) == 0:
-        print(" - I follow nobody ... sad")
+        print("I follow nobody ... sad")
     else:
         for person in data["following"]:
             print(f" - {person['username']}")
@@ -50,7 +50,7 @@ def handle_view_connections(current_user):
     # show followers list
     print("\nPeople who follow me:")
     if len(data["followers"]) == 0:
-        print(" - nobody follow me ... T_T")
+        print("No one follows me ... T_T")
     else:
         for person in data["followers"]:
             print(f" - {person['username']}")
