@@ -96,3 +96,24 @@ def update_profile(user_id: str, new_name: str, new_email: str,
         email=r["email"],
         bio=r["bio"]
     )
+def search_users(query: str):
+    # this function search user by name or username
+    # UC-10: Search Users
+
+    if not query or query.strip() == "":
+        return []   # empty search return nothing
+
+    cypher = """
+    MATCH (u:User)
+    WHERE toLower(u.username) CONTAINS toLower($q)
+       OR toLower(u.name) CONTAINS toLower($q)
+    RETURN u.id AS id,
+           u.username AS username,
+           u.name AS name,
+           u.email AS email,
+           u.bio AS bio
+    ORDER BY username
+    """
+
+    result = run_query(cypher, {"q": query})
+    return result or []
