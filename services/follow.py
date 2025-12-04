@@ -130,3 +130,32 @@ def get_connections(current_user_id: str):
         "followers": followers
     }
 
+    # UC-8: find common follow between me and another user
+def get_mutual_connections(current_user_id: str, target_username: str):
+    # first check target user exists
+    query = """
+    MATCH (t:User {username: $username})
+    RETURN t.id AS id
+    """
+    res = run_query(query, {"username": target_username})
+
+    if not res:
+        return {"error": "Target user not found."}
+
+    target_user_id = res[0]["id"]
+
+    # prevent checking with myself
+    if target_user_id == current_user_id:
+        return {"error": "Cannot check mutual with yourself."}
+
+    # now find mutual follow
+    query = """
+    MATCH (me:User {id: $meId})-[:FOLLOWS]->(u:User)
+    MATCH (t:User {id: $targetId})-[:FOLLOWS]->(u)
+    RETURN u.id AS id, u.username AS username
+    ORDER BY username
+    """
+    mutuals = run_query(query, {"meId": current_user_id, "targetId": target_user_id})
+
+    # mutuals might be empty list, it's ok
+    return mutuals
