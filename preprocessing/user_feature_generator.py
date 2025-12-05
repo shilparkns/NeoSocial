@@ -91,12 +91,12 @@ for i, nid in enumerate(node_ids):
     raw_password = f"{base_username}pass123" 
     password = hashlib.sha256(raw_password.encode()).hexdigest()
 
-    rows.append([nid, name, username, email, bio, password])
+    rows.append([nid, name, username, email, bio, password, raw_password])
 
 # 3) write users_1500.csv
 with open(USERS_OUT, "w", newline="") as f:
     writer = csv.writer(f)
-    writer.writerow(["userId", "name", "username", "email", "bio", "password"])
+    writer.writerow(["userId", "name", "username", "email", "bio", "password", "rawpassword"])
     writer.writerows(rows)
 
 print(f"Generated {len(rows)} users.")

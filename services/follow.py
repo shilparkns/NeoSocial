@@ -96,7 +96,7 @@ def get_following(current_user_id: str):
     """
     query = """
     MATCH (me:User {id: $meId})-[:FOLLOWS]->(u:User)
-    RETURN u.id AS id, u.username AS username
+    RETURN u.id AS id, u.username AS username, u.name AS name
     ORDER BY username
     """
     res = run_query(query, {"meId": current_user_id})
@@ -109,7 +109,7 @@ def get_followers(current_user_id: str):
     """
     query = """
     MATCH (u:User)-[:FOLLOWS]->(me:User {id: $meId})
-    RETURN u.id AS id, u.username AS username
+    RETURN u.id AS id, u.username AS username, u.name AS name
     ORDER BY username
     """
     res = run_query(query, {"meId": current_user_id})
@@ -153,7 +153,7 @@ def get_mutual_connections(current_user_id: str, target_username: str):
     query = """
     MATCH (me:User {id: $meId})-[:FOLLOWS]->(u:User)
     MATCH (t:User {id: $targetId})-[:FOLLOWS]->(u)
-    RETURN u.id AS id, u.username AS username
+    RETURN u.id AS id, u.username AS username, u.name AS name
     ORDER BY username
     """
     mutuals = run_query(query, {"meId": current_user_id, "targetId": target_user_id})
