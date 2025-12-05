@@ -1,4 +1,4 @@
-from services.follow import follow_user, unfollow_user, get_connections, get_mutual_connections, get_friend_recommendations
+from services.follow import follow_user, unfollow_user, get_connections, get_mutual_connections, get_friend_recommendations, get_popular_users
 
 def handle_follow(current_user):
     print("\n=== Follow User ===")
@@ -95,6 +95,23 @@ def handle_friend_recommendations(current_user):
         score = item["score"]
         print(f"{user.name} ({user.username})  |  Mutual connections: {score}")
 
+
+def handle_popular_users(current_user):
+    """
+    UC-11: Explore Popular Users
+    """
+    print("\n=== Popular Users ===")
+
+    popular = get_popular_users(limit=10)
+
+    if not popular:
+        print("No users found.")
+        return
+
+    for rank, item in enumerate(popular, start=1):
+        user = item["user"]
+        followers = item["followers"]
+        print(f" #{rank} {user.name} ({user.username}) | Followers: {followers}")
 
 
 
