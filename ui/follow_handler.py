@@ -45,7 +45,7 @@ def handle_view_connections(current_user):
         print("I follow nobody ... sad")
     else:
         for person in data["following"]:
-            print(f" - {person['username']}")
+            print(f" - {person['name']} @{person['username']}")
 
     # show followers list
     print("\nPeople who follow me:")
@@ -53,7 +53,7 @@ def handle_view_connections(current_user):
         print("No one follows me ... T_T")
     else:
         for person in data["followers"]:
-            print(f" - {person['username']}")
+            print(f" - {person['name']} @{person['username']}")
 
 def handle_mutual_connections(current_user):
     # this function show mutual follow between me and other user (sorry english bad)
@@ -77,9 +77,9 @@ def handle_mutual_connections(current_user):
         print("No mutuals found.")
         return
 
-    print("\nWe both follow these users:")
+    print(f"\nYou and {username} both follow these users:")
     for user in result:
-        print(f" - {user['username']}")
+        print(f" - {user['username']} @{user['name']}")
 
 def handle_friend_recommendations(current_user):
     print("\n=== Friend Recommendations ===")
@@ -93,7 +93,7 @@ def handle_friend_recommendations(current_user):
     for item in recs:
         user = item["user"]
         score = item["score"]
-        print(f"{user.name} ({user.username})  |  Mutual connections: {score}")
+        print(f"{user.name} @{user.username} |  Mutual connections: {score}")
 
 
 def handle_popular_users(current_user):
@@ -111,7 +111,7 @@ def handle_popular_users(current_user):
     for rank, item in enumerate(popular, start=1):
         user = item["user"]
         followers = item["followers"]
-        print(f" #{rank} {user.name} ({user.username}) | Followers: {followers}")
+        print(f" #{rank} {user.name} @{user.username} | Followers: {followers}")
 
 
 

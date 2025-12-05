@@ -1,10 +1,20 @@
 from services.auth import register, login
 
+def _is_valid_email(email: str) -> bool:
+    if "@" not in email:
+        return False
+    local, _, domain = email.partition("@")
+    return bool(local and "." in domain)
+
+
 def handle_register():
     print("\n=== Register ===")
     name = input("Name: ").strip()
     username = input("Username: ").strip()
     email = input("Email: ").strip()
+    if not _is_valid_email(email):
+        print("Invalid email format.")
+        return
     password = input("Password: ").strip()
 
     result = register(name, username, email, password)
