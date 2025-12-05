@@ -1,6 +1,6 @@
 from ui.auth_handler import handle_register, handle_login
 from ui.profile_handler import handle_view_profile, handle_edit_profile, handle_search_users
-from ui.follow_handler import handle_follow, handle_unfollow, handle_view_connections, handle_mutual_connections
+from ui.follow_handler import handle_follow, handle_unfollow, handle_view_connections, handle_mutual_connections, handle_friend_recommendations
 
 
 def main_loop():
@@ -51,7 +51,8 @@ def show_logged_in_menu(current_user):
     print("4) Unfollow a user")
     print("5) View my connections")
     print("6) View mutual connections")
-    print("7) Search users")
+    print("7) Friend recommendations")
+    print("8) Search users")
     print("0) Logout")
 
     choice = input("> ").strip()
@@ -79,8 +80,12 @@ def show_logged_in_menu(current_user):
     elif choice == "6":
         handle_mutual_connections(current_user)
         return current_user, False
-
+    
     elif choice == "7":
+        handle_friend_recommendations(current_user)
+        return current_user, False
+
+    elif choice == "8":
         handle_search_users(current_user)
         return current_user, False
 
