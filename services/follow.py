@@ -1,4 +1,5 @@
 from db.connection import run_query
+from models.user import User
 
 def follow_user(current_user_id: str, target_username: str):
     """
@@ -159,3 +160,41 @@ def get_mutual_connections(current_user_id: str, target_username: str):
 
     # mutuals might be empty list, it's ok
     return mutuals
+
+
+def get_friend_recommendations(user_id, limit=10):
+    query = """
+    MATCH (u:User {id: $user_id})-[:FOLLOWS]->(mid:User)-[:FOLLOWS]->(rec:User)
+    WHERE rec <> u
+    AND NOT (u)-[:FOLLOWS]->(rec)
+    WITH rec, count(DISTINCT mid) AS mutualConnections
+    RETURN rec {
+    .id,
+    .username,
+    .name,
+    .email,
+    .bio
+    } AS userData,
+    mutualConnections
+    ORDER BY mutualConnections DESC, userData.username
+    LIMIT $limit
+    """
+
+    result = run_query(query, {"user_id": user_id, "limit": limit})
+
+    out = []
+    for row in result:
+        data = row["userData"]
+        score = row["mutualConnections"]
+
+        user = User(
+            id=data["id"],
+            name=data["name"],
+            username=data["username"],
+            email=data["email"],
+            bio=data.get("bio", "")
+        )
+
+        out.append({"user": user, "score": score})
+
+    return out

@@ -1,4 +1,4 @@
-from services.follow import follow_user, unfollow_user, get_connections, get_mutual_connections
+from services.follow import follow_user, unfollow_user, get_connections, get_mutual_connections, get_friend_recommendations
 
 def handle_follow(current_user):
     print("\n=== Follow User ===")
@@ -80,6 +80,20 @@ def handle_mutual_connections(current_user):
     print("\nWe both follow these users:")
     for user in result:
         print(f" - {user['username']}")
+
+def handle_friend_recommendations(current_user):
+    print("\n=== Friend Recommendations ===")
+
+    recs = get_friend_recommendations(current_user.id, limit=10)
+
+    if not recs:
+        print("No recommendations available.")
+        return
+
+    for item in recs:
+        user = item["user"]
+        score = item["score"]
+        print(f"{user.name} ({user.username})  |  Mutual connections: {score}")
 
 
 
