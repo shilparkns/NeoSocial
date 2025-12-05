@@ -198,3 +198,46 @@ def get_friend_recommendations(user_id, limit=10):
         out.append({"user": user, "score": score})
 
     return out
+
+
+
+def get_popular_users(limit=10):
+    """
+    UC-11: Explore Popular Users
+
+    Returns the most-followed users with their follower counts.
+    """
+    query = """
+    MATCH (u:User)
+    OPTIONAL MATCH (u)<-[f:FOLLOWS]-(:User)
+    WITH u, count(f) AS followers
+    RETURN u {
+      .id,
+      .username,
+      .name,
+      .email,
+      .bio
+    } AS userData,
+    followers
+    ORDER BY followers DESC, userData.username
+    LIMIT $limit
+    """
+
+    result = run_query(query, {"limit": limit})
+
+    out = []
+    for row in result:
+        data = row["userData"]
+        followers = row["followers"]
+
+        user = User(
+            id=data["id"],
+            name=data["name"],
+            username=data["username"],
+            email=data["email"],
+            bio=data.get("bio", "")
+        )
+
+        out.append({"user": user, "followers": followers})
+
+    return out
