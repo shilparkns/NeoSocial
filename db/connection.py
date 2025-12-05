@@ -7,7 +7,7 @@ load_dotenv()
 
 # Neo4j Connection Config
 URI = os.getenv("NEO4J_URI")
-USER = os.getenv("NEO4J_USERNAME")
+USER = os.getenv("NEO4J_USER")
 PASSWORD = os.getenv("NEO4J_PASSWORD")
 
 # Driver Initialization
