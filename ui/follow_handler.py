@@ -1,4 +1,4 @@
-from services.follow import follow_user, unfollow_user, get_connections
+from services.follow import follow_user, unfollow_user, get_connections, get_mutual_connections
 
 def handle_follow(current_user):
     print("\n=== Follow User ===")
@@ -55,6 +55,31 @@ def handle_view_connections(current_user):
         for person in data["followers"]:
             print(f" - {person['username']}")
 
+def handle_mutual_connections(current_user):
+    # this function show mutual follow between me and other user (sorry english bad)
+
+    print("\n=== Mutual Connections (UC-8) ===")
+    username = input("Enter username to check mutuals: ").strip()
+
+    if username == "":
+        print("Username cannot be empty.")
+        return
+
+    result = get_mutual_connections(current_user.id, username)
+
+    # error case
+    if isinstance(result, dict) and "error" in result:
+        print("Error:", result["error"])
+        return
+
+    # empty list → no mutual
+    if len(result) == 0:
+        print("No mutuals found.")
+        return
+
+    print("\nWe both follow these users:")
+    for user in result:
+        print(f" - {user['username']}")
 
 
 
