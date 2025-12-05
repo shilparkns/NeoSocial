@@ -3,6 +3,7 @@ from services.profile import (
     update_profile,
     is_email_taken,
     is_username_taken,
+    search_users
 )
 
 
@@ -107,3 +108,26 @@ def handle_edit_profile(current_user):
 
     print("Profile updated successfully.")
     return updated
+
+
+def handle_search_users(current_user):
+    # this function search user
+    # UC-10: Search Users 
+
+    print("\n=== Search Users (UC-10) ===")
+    q = input("Type name or username to search: ").strip()
+
+    if q == "":
+        print("Please type something.")
+        return
+
+    results = search_users(q)
+
+    if len(results) == 0:
+        print("No users found.")
+        return
+
+    print("\nMatched users:")
+    for u in results:
+        # name might be None, so use get()
+        print(f" - {u['username']} ({u.get('name', 'no name')})")
